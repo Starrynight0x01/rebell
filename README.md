@@ -39,7 +39,7 @@ Rebellion has a feature that allows you to receive a reverse shell via `netcat` 
 ## Build & Run
 ```
 git clone https://github.com/brosck/Rebellion
-cd Rebellion/src
+cd Rebellion
 # edit config.h file
 make
 sudo insmod rebellion.ko
