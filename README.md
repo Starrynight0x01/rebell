@@ -22,7 +22,7 @@ Rebellion allows you to hide a TCP/UDP port on your system. The port is defined 
 When running the `kill -10 0` command with a low-privilege user, Rebellion adds their privileges to `0`, making them a user with `root` permissions on the system.
 
 ### Backdoor via ping
-Rebellion has a feature that allows you to receive a reverse shell via `netcat` by sending an ICMP packet via `ping` to your IP and port defined in the `config.h` file in the macros `YOUR_SRV_IP` and `YOUR_SRV_PORT`.
+Rebellion has a feature that allows you to receive a reverse shell via `netcat` (it is important that it is installed) by sending an ICMP packet via `ping` to your IP and port defined in the `config.h` file in the macros `YOUR_SRV_IP` and `YOUR_SRV_PORT`.
 
 * Self hide/unhide
 * Hide folder/file
