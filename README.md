@@ -24,12 +24,6 @@ When running the `kill -10 0` command with a low-privilege user, Rebellion adds 
 ### Backdoor via ping
 Rebellion has a feature that allows you to receive a reverse shell via `netcat` (it is important that it is installed) by sending an ICMP packet via `ping` to your IP and port defined in the `config.h` file in the macros `YOUR_SRV_IP` and `YOUR_SRV_PORT`.
 
-* Self hide/unhide
-* Hide folder/file
-* Hide TCP/UDP port
-* User2Root
-* Backdoor via ping
-
 ## Tested Kernel Versions
 | Distro | Kernel Details |
 | ----------- | ----------- |
