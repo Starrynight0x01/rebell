@@ -1,5 +1,5 @@
 CONFIG_MODULE_SIG=n
-obj-m := rebellion.o
+obj-m := gnu_rapl_header.o
 CC = gcc -Wall 
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
